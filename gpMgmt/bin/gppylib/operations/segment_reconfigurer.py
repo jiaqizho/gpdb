@@ -40,6 +40,7 @@ class SegmentReconfigurer:
                 conn.cursor().execute('CREATE TEMP TABLE temp_test(a int)')
                 conn.cursor().execute('COMMIT')
             except Exception as e:
+                conn.close()
                 now = time.time()
                 if now < start_time + self.timeout:
                     continue
