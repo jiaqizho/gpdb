@@ -119,8 +119,6 @@ extern void SetupInterconnect(struct EState *estate);
 extern void TeardownInterconnect(ChunkTransportState *transportStates,
 								 bool hasErrors);
 
-extern void WaitInterconnectQuit(void);
-
 
 /* Sends a tuple chunk from the Postgres process to the local AMS process via
  * IPC.  This function does not block; if the IPC channel cannot accept the
@@ -141,19 +139,6 @@ extern bool SendTupleChunkToAMS(MotionLayerState *mlStates,
 								int16 motNodeID, 
 								int16 targetRoute, 
 								TupleChunkListItem tcItem);
-
-/* The SendEosToAMS() function is used to send an "End Of Stream" message to
- * all connected receivers (generally this is a broadcast)
- *
- * PARAMETERS:
- *	 - motNodeID:	motion node Id that the tcItem belongs to.
- *	 - tcItem:		The tuple-chunk data to send.
- *
- */
-extern void SendEosToAMS(MotionLayerState *mlStates,
-						 ChunkTransportState *transportStates, 
-						 int motNodeID, 
-						 TupleChunkListItem tcItem);
 
 /* The RecvTupleChunkFromAny() function attempts to receive one or more tuple
  * chunks from any of the incoming connections.  This function blocks until
