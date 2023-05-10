@@ -140,48 +140,6 @@ extern bool SendTupleChunkToAMS(MotionLayerState *mlStates,
 								int16 targetRoute, 
 								TupleChunkListItem tcItem);
 
-/* The RecvTupleChunkFromAny() function attempts to receive one or more tuple
- * chunks from any of the incoming connections.  This function blocks until
- * at least one TupleChunk is received. (Although PG Interrupts are still
- * checked for within this call).
- *
- * This function makes some effort to "fairly" pull data from peers with data
- * available (a peer with data available is always better than waiting for
- * one without data available; but a peer with data available which hasn't been
- * read from recently is better than a peer with data available which has
- * been read from recently).
- *
- * NOTE: The TupleChunkListItem can have other's chained to it.  The caller
- *		 should check and process all in list.
- *
- * PARAMETERS:
- *	- motNodeID:  motion node id to receive for.
- *	- srcRoute: output parameter that allows the function to return back which
- *				route the TupleChunkListItem is from.
- *
- * RETURN:
- *	 - A populated TupleChunkListItemData structure (allocated with palloc()).
- */
-extern TupleChunkListItem RecvTupleChunkFromAny(MotionLayerState *mlStates,
-												ChunkTransportState *transportStates, 
-												int16 motNodeID, 
-												int16 *srcRoute);
-
-
-/* The RecvTupleChunkFrom() function is similar to the RecvTupleChunkFromAny()
- * function except that the connection we are interested in is specified with
- * srcRoute.
- *
- * PARAMETERS:
- *	 - motNodeID: motion node id to receive for.
- *	 - srcRoute:  which connection to receive on.
- * RETURN:
- *	 - A populated TupleChunkListItemData structure (allocated with palloc()).
- */
-extern TupleChunkListItem RecvTupleChunkFrom(ChunkTransportState *transportStates, 
-											 int16 motNodeID, 
-											 int16 srcRoute);
-
 /* The DeregisterReadInterest() function is used to specify that we are no
  * longer interested in reading from the specified srcRoute. After calling this
  * function, we should no longer ever return TupleChunks from this srcRoute
